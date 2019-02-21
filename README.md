@@ -76,9 +76,104 @@ describe('webdriver.io page', () => {
     assert.equal(title, 'WebdriverIO - Next-gen WebDriver test framework for Node.js');
   });
 });
+
+
+const { remote } = require('webdriverio');
+
+(async () => {
+  const browser = await remote({
+    logLevel: 'trace',
+    capabilities: {
+      browserName: 'chrome'
+    }
+  })
+  
+  await browser.url('https://duckduckgo.com/')
+  
+  const inputElem = await browser.$('#search_form_input_homepage')
+  
+  const inputElem = await browser.$('#search_from_input_homepage')
+  await inputElem.setValue('WebdriverIO')
+  
+  const inputElem = await brower.$('#search_form_input_homepage')
+  await inputElem.setValue('WebdriverIO')
+  
+  const submitBtn = await brower.$('#search_button_homepage')
+  await submitBtn.click()
+  
+  console.log(await browser.getTitle())
+  
+  await browser.deleteSession()  
+})().catch((e) => console.error(e))
+
+
+describe('DuckDuckGo search', () => {
+  it ('search for WebdriverIO', () => {
+    browser.url('https://duckduckgo.com/')
+    
+    $('#serch_form_input_homepage').setValue('WebdriverIO')
+    $('#search_button_homepage').click()
+    
+    const title = browser.getTitle()
+    console.log('Title is: ' + title)
+  })
+})
+
+// wdio.conf.js
+exports.config = {
+  
+  afterTest: (test) => {
+    console.log(`Finished test "$(test.parent) - ${test.title}"`);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ```
+{
+  browserName: 'chrome',
+  browserVersion: '27.0',
+  platformName: 'Windows 10'
+}
+
+reporters: [
+  'dot',
+  'spec',
+  ['junit', {
+    outputDir: ___dirname + '/reports',
+    otherOption: 'foobar'
+  }]
+]
 ```
 
 

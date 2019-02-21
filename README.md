@@ -23,6 +23,8 @@ npm i --save-dev @wdio/cli
 mkdir -p ./test/specs
 touch ./test/specs/basic.js
 ./node_modules/.bin/wdio wdio.conf.js
+
+npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/register
 ```
 
 ```js
@@ -128,35 +130,112 @@ exports.config = {
 }
 
 
+module.exports = {
+  presets: [
+    ['@babel/preset-env', {
+      targets: {
+        node: 8
+      }
+    }]
+  ]
+}
+
+before: function(){
+  require('@babel/register');
+},
+
+mochaOpts: {
+  ui: 'bdd',
+  compilers: ['js:@babel/register'],
+  require: ['./test/helpers/common.js']
+},
+
+before: funciton() {
+  require('ts-node').register({ files: true });
+},
+
+mochaOpts: {
+  ui: 'bdd',
+  require: [
+    'tsconfig-paths/register'
+  ]
+},
+
+require("ts-node/register")
+module.exports = require("wdio.conf.ts")
+
+const config: WebdriverIO.Config = {
+}
+export { config }
+
+import { Suite, Test } from "@wdio/mocha-framework"
+
+const elem = $('h2.subheading a');
+elem.click();
+
+const link = $('=WebdriverIO');
+console.log(link.getText());
+console.log(link.getAttribute('href'));
+
+const link = $('*=driver');
+console.lo(link.getText());
+
+const header = $('h1=Welcome to my Page');
+console.log(header.getText());
+console.log(header.getTagName());
+
+const header = $('h1*=Welcome');
+console.log(header.getText());
+
+const classNameAndText = $('.someElem=WebdriverIO is the best');
+console.log(classNameAndText.getText());
+
+const idAndText = $('#elem=WebdriverIO is the best');
+console.log(idAndTExt.getText());
+
+const classNameAndPartialText = $('.someElem*=WebdriverIO');
+console.log(classNameAndPartialText.getText());
+
+const idAndPartialText = $('#elem*=WebdriverIO');
+console.log(idAndPartialText.getText());
+
+const classNameAndText = $('<my-element />');
+console.log(classNameAndText.getText());
+
+const paragraph = $('//BODY/P[2]');
+console.log(paragraph.getText());
+
+const parent = paragraph.$('..');
+console.log(parent.getTagName());
+
+const elem = $('elem')
+elem.$(function () { return this.nextSibling.nextSibling })
+
+const selector = 'ne UiSelector().text("Cancel").className("android.widget.Button")';
+const Button = $(`android=${selector}`);
+Button.click();
+
+const selector = `UIATarget.localTarget().frontMostApp().mainWindow().buttons()[0]`;
+const Button = $(`ios=${selector}`);
+Button.click();
 
 
+const selector = 'type == \'XCUIElementTypeSwitch\' && name CONTAINS \'Allow\'';
+const Switch = $(`-ios predicate string:${selector}`);
+Switch.click();
+
+const selector = '**/XCUIElementTypeCell[`name BEGINSWITCH "D"`]/**/XCUIElementTypeButton';
+const Button = $(`-ios class chain:${selector}`);
+Button.click();
+
+const elem = $('~my_accessibility_identifier');
+elem.click();
+
+$('UIATextField').click();
+$('android.widget.DatePicker').click();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$('.row .entry:nth-child(1)').$('button*=Add').click();
 ```
 
 ```
@@ -174,6 +253,27 @@ reporters: [
     otherOption: 'foobar'
   }]
 ]
+
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [./*],
+      "src/*": ["./src/*"]
+    },
+    "types": ["node", "webdriverio"]
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}
+
+{
+  "compilerOptions": {
+    "types": ["node", "@wdio/sync"]
+  }
+}
+
 ```
 
 

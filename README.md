@@ -298,6 +298,167 @@ assert.true(
   firefoxMessages.map((m) => m.getText()).includes('Hi, I am Chrome')
 )
 
+
+// wdio.conf.js
+var config = {}
+if (process.env.CI) {
+  config.user = process.env.SAUCE_USERNAME;
+  config.key = process.env.SAUCE_ACCESS_KEY;
+}
+exports.config = config
+
+exports.config = {
+
+  runner: 'local',
+  
+  hostname: '0.0.0.0',
+  port: 4444,
+  path: '/wd/hub',
+  
+  user: 'webdriverio',
+  key: 'xxxxxxxxxxxxxxxx',
+  
+  region: 'us',
+  
+  specs: [
+    'test/spec/**'
+  ],
+  
+  exclude: [
+    'test/spec/multibrowser/**',
+    'test/spec/mobile/**'
+  ],
+  
+  maxInstances: 10,
+  
+  maxInstancesPerCapability: 10,
+  
+  capabilities: [{
+    browserName: 'chrome',
+    'goog:chromeOptions': {
+    }
+  }, {
+    maxInstances: 5,
+    browserName: 'firefox',
+    specs: [
+      'test/ffOnly/*'
+    ],
+    "moz:firefoxOptions": {
+    }
+  }],
+  
+  execArgv: [],
+  
+  logLevel: 'info',
+  
+  bail: 0,
+  
+  baseUrl: 'http://localhost:8080',
+  
+  waitforTimeout: 1000,
+  
+  filesToWatch: [
+  ],
+  
+  framework: 'mocha',
+  
+  reporters: [
+    'dot',
+    ['allure', {
+      outputDir: './'
+    }]
+  ],
+  
+  mochaOpts: {
+    ui: 'bdd'
+  },
+  
+  jasmineNodeOpts: {
+    
+    defaultTimeoutInterval: 5000,
+    
+    expectationResultHandler: function(passed, assertion){
+    },
+    
+    grep: null,
+    invertGrep: null
+  },
+  
+  cucumberOpts: {
+    require: [],
+    backtrace: false,
+    compiler: [],
+    dryRun: false,
+    failFast: false,
+    format: ['pretty'],
+    colors: true,
+    snippets: true,
+    source: true,
+    profile: [],
+    strict: false,
+    tags: [],
+    timeout: 20000,
+    ignoreUndefineDefinitions: false,
+  },
+  
+  onPrepare: funciton (config, capabilties) {
+  },
+  
+  beforeSession: function (config, capabilities, specs) {
+  },
+  
+  before: funciton(capabilities, specs) {
+  },
+  
+  beforeSuite: function (suite) {
+  },
+  
+  beforeHook: function () {
+  },
+  
+  afterHook: function () {
+  },
+  
+  beforeTest: function (test) {
+  },
+  
+  beforeCommand: funciton (commandName, args) {
+  },
+  
+  afterCOmmand: function(commandName, args, result, error) {
+  },
+  
+  aftertest: funciton (test) {
+  },
+  
+  afterSuite: function (suite) {
+  },
+  
+  after; function (result, capabilities, specs) {
+  },
+  
+  afterSession: function (config, capabilities, specs) {
+  },
+  
+  onComplete: function (exitCode, config, capabilities, results) {
+  },
+  
+  onReload: function(oldSessionId, newSessionId) {
+  },
+  
+  beforeFeature: function (feature) {
+  },
+  beforeScenario: function (scenario) {
+  },
+  beforeStep: function (step) {
+  },
+  afterStep: function (stepResult) {
+  },
+  afterScenario: funciton (scenario) {
+  },
+  afterFeature: funciton (feature) {
+  }
+};
 ```
 
 ```
@@ -336,6 +497,13 @@ reporters: [
   }
 }
 
+
+browserName: 'chrome',
+version: '27.0',
+platform: 'XP',
+'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+name: 'integration',
+build: process.env.TRAVIS_BUILD_NUMBER
 ```
 
 

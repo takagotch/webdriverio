@@ -236,6 +236,68 @@ $('android.widget.DatePicker').click();
 
 
 $('.row .entry:nth-child(1)').$('button*=Add').click();
+
+import { multiremote } from 'webdriverio';
+
+(async () => {
+  const browser = await multiremote({
+    myChromeBrowser: {
+      capabilities: {
+        browserName: 'chrome'
+      }
+    },
+    myFirefoxBrowser: {
+      capabilities: {
+        browserName: 'firefox'
+      }
+    }
+  });
+  
+  await browser.url('http://json.org');
+  
+  const elem = await browser.$('#someElem');
+  await elem.click();
+  
+  await elem.myFirefoxBrowser.click();
+});
+
+export.config = {
+  
+  capabilities: {
+    myChromeBrowser: {
+      capabilities: {
+        browserName: 'chrome'
+      }
+    },
+    myFirefoxBrowser: {
+      capabilities: {
+        browserName: 'firefox'
+      }
+    }
+  }
+};
+
+browser.url('http://chat.socket.io/');
+
+browser.url('https://www.whatismybrowser.com/');
+
+const elem = $('.string-major');
+const result = elem.getText();
+
+console.log(result.resultChrome);
+console.log(result.resultFirefox);
+
+myChromeBrowser.$('#message').setValue('Hi, I am Chrome');
+myChromeBrowser.$('#send').click();
+
+const firefoxMessage = myFirefoxBrowser.$$('.message')
+
+firefoxMessages.waitForExist();
+
+assert.true(
+  firefoxMessages.map((m) => m.getText()).includes('Hi, I am Chrome')
+)
+
 ```
 
 ```
